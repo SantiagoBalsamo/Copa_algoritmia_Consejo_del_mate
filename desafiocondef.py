@@ -10,12 +10,16 @@ def ingresar_equipos():
     for i in range(1, 5):
         while True:
             nombre = input(f"  Equipo {i}: ").strip().upper()
-            if nombre.isalpha():
-                equipos[nombre] = crear_equipo()
-                break
-            else:
+            if not nombre.isalpha():
                 print("    No valido, ingrese un pais.")
-                print("")             
+                print("")
+                continue
+            if nombre in equipos:
+                print(f"    No valido, el pais ya fue ingresado.")  
+                print("")
+            else:
+                equipos[nombre] = crear_equipo()
+                break   
     return equipos
 
 
