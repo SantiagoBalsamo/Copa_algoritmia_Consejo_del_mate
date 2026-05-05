@@ -1,7 +1,7 @@
 # ============================================================
 # Sistema de Clasificacion FIFA - Copa del Mundo 2026
 # Version con funciones (def)
-# ============================================================
+print("hola")
 
 
 def crear_equipo():
