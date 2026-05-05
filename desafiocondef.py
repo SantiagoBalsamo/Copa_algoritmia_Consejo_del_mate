@@ -73,7 +73,7 @@ def ingresar_resultados(equipos, partidos):
             entrada = input(f"    Goles {local}: ").strip()
             try:
                 goles_local = int(entrada)
-                if goles_local<=0:
+                if goles_local<0:
                     print("    No valido, ingrese un numero positivo.")
                 else:
                     encontrado=True
@@ -86,7 +86,7 @@ def ingresar_resultados(equipos, partidos):
             entrada = input(f"    Goles {visitante}: ").strip()
             try:
                 goles_visitante = int(entrada)
-                if goles_visitante<=0:
+                if goles_visitante<0:
                     print("    No valido, ingrese un numero positivo.")
                 else:
                     encontrado=True
@@ -145,15 +145,20 @@ def mostrar_clasificados(tabla):
     print("========================")
     print("Posicion de Clasificados")
     print("========================\n")
+
+    print("------------")
     print("Primer puesto")
-    print("-------------")
+    
     print(tabla[0][0])
+    print("-------------")
     print("Segundo peusto")
-    print("--------------")
+    
     print(tabla[1][0])
-    print("Tercero")
-    print("-------")
+    print("-------------")
+    print("Tercero puesto")
+
     print(tabla[2][0])
+    print("-------------")
 
 
 
