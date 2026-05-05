@@ -8,8 +8,14 @@ def ingresar_equipos():
     print("Ingrese los 4 equipos del grupo:")
     equipos = {}
     for i in range(1, 5):
-        nombre = input(f"  Equipo {i}: ").strip().upper()
-        equipos[nombre] = crear_equipo()
+        while True:
+            nombre = input(f"  Equipo {i}: ").strip().upper()
+            if nombre.isalpha():
+                equipos[nombre] = crear_equipo()
+                break
+            else:
+                print("    No valido, ingrese un pais.")
+                print("")             
     return equipos
 
 
