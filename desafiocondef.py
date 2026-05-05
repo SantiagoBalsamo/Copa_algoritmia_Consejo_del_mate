@@ -12,6 +12,8 @@ def ingresar_equipos():
         equipos[nombre] = crear_equipo()
     return equipos
 
+
+
 #Devuelve un diccionario con las estadisticas de un equipo en cero.
 def crear_equipo():
     return {"pj": 0, "puntos": 0, "gf": 0, "gc": 0, "dg": 0}
@@ -27,6 +29,9 @@ def generar_partidos(equipos):
         for j in range(i + 1, len(nombres)):
             partidos.append((nombres[i], nombres[j]))
     return partidos
+
+
+
 
 #Actualiza las estadisticas de ambos equipos segun el resultado, suma partidos jugados, goles y puntos
 def procesar_partido(equipos, local, visitante, goles_local, goles_visitante):
@@ -52,23 +57,54 @@ def procesar_partido(equipos, local, visitante, goles_local, goles_visitante):
         equipos[local]["puntos"]     += 1
         equipos[visitante]["puntos"] += 1
         return "Empate"
+    
 
-#Recorre los partidos, pide los goles de cada uno y llama a procesar_partido() para actualizar estadisticas
+
+#Pide los goles de cada uno y valida que solo sea un caracter numerico lo que se ingresa
 def ingresar_resultados(equipos, partidos):
 
     print("\nIngrese los resultados de cada partido:\n")
     for local, visitante in partidos:
         print(f"  {local} vs {visitante}")
-        goles_local     = int(input(f"    Goles {local}: "))
-        goles_visitante = int(input(f"    Goles {visitante}: "))
+
+        # Validar goles del equipo local
+        encontrado=False
+        while not encontrado:
+            entrada = input(f"    Goles {local}: ").strip()
+            try:
+                goles_local = int(entrada)
+                if goles_local<=0:
+                    print("    No valido, ingrese un numero positivo.")
+                else:
+                    encontrado=True
+            except ValueError:
+                print("    No valido, ingrese un numero.\n")
+
+        # Validar goles del equipo visitante
+        encontrado=False
+        while not encontrado:
+            entrada = input(f"    Goles {visitante}: ").strip()
+            try:
+                goles_visitante = int(entrada)
+                if goles_visitante<=0:
+                    print("    No valido, ingrese un numero positivo.")
+                else:
+                    encontrado=True
+            except ValueError:
+                print("    No valido, ingrese un numero.\n")
+
         resultado = procesar_partido(equipos, local, visitante, goles_local, goles_visitante)
         print(f"    Resultado: {resultado}\n")
+
+
 
 #Calcula la diferencia de gol (GF - GC) para cada equipo
 def calcular_diferencia_gol(equipos):
 
     for nombre in equipos:
         equipos[nombre]["dg"] = equipos[nombre]["gf"] - equipos[nombre]["gc"]
+
+        
 
 '''
     Ordena y devuelve la tabla segun los criterios de la FIFA:
@@ -89,6 +125,8 @@ def ordenar_tabla(equipos):
         )
     )
 
+
+
 #Muestra la tabla completa con todas las estadisticas
 def mostrar_tabla(tabla):
 
@@ -99,6 +137,8 @@ def mostrar_tabla(tabla):
         print(f"{pos:<4} {nombre:<8} {stats['pj']:<4} {stats['puntos']:<5} {stats['gf']:<4} {stats['gc']:<4} {stats['dg']:<4}")
     print("==========================================\n")
 
+
+
 #Muestra los clasificados en el formato oficial FIFA
 def mostrar_clasificados(tabla):
     
@@ -106,10 +146,13 @@ def mostrar_clasificados(tabla):
     print("Posicion de Clasificados")
     print("========================\n")
     print("Primer puesto")
+    print("-------------")
     print(tabla[0][0])
     print("Segundo peusto")
+    print("--------------")
     print(tabla[1][0])
     print("Tercero")
+    print("-------")
     print(tabla[2][0])
 
 
