@@ -81,8 +81,8 @@ def ingresar_resultados(equipos, partidos):
             entrada = input(f"    Goles {local}: ").strip()
             try:
                 goles_local = int(entrada)
-                if goles_local<0:
-                    print("    No valido, por favor ingrese nuevamente.")
+                if goles_local<0 or goles_local > 20:
+                    print("    No valido, por favor ingrese un valor entre 0 y 20.")
                 else:
                     encontrado=True
             except ValueError:
