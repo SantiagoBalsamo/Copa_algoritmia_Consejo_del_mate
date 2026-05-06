@@ -138,12 +138,16 @@ def ordenar_tabla(equipos):
 #Muestra la tabla completa con todas las estadisticas
 def mostrar_tabla(tabla):
 
-    print("==========================================")
-    print(f"{'POS':<4} {'EQUIPO':<8} {'PJ':<4} {'PTS':<5} {'GF':<4} {'GC':<4} {'DG':<4}")
-    print("------------------------------------------")
+    ancho = max(len(nombre) for nombre, _ in tabla)
+    ancho = max(ancho, 6) + 2
+
+    separador = "=" * (ancho + 30)
+    print(separador)
+    print(f"{'POS':<4} {'EQUIPO':<{ancho}} {'PJ':<4} {'PTS':<5} {'GF':<4} {'GC':<4} {'DG':<4}")
+    print("-" * (ancho + 30))
     for pos, (nombre, stats) in enumerate(tabla, start=1):
-        print(f"{pos:<4} {nombre:<8} {stats['pj']:<4} {stats['puntos']:<5} {stats['gf']:<4} {stats['gc']:<4} {stats['dg']:<4}")
-    print("==========================================\n")
+        print(f"{pos:<4} {nombre:<{ancho}} {stats['pj']:<4} {stats['puntos']:<5} {stats['gf']:<4} {stats['gc']:<4} {stats['dg']:<4}")
+    print(separador + "\n")
 
 
 
