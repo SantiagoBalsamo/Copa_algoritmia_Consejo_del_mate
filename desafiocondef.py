@@ -2,7 +2,7 @@
 
 # --- FUNCIONES ---
 
-#Pide los 4 nombres de equipo y devuelve el diccionario de equipos
+#Pide los 4 nombres de equipo y crea un diccionario con los nombres de los paises
 def ingresar_equipos():
 
     print("Ingrese los 4 equipos del grupo:")
@@ -10,21 +10,19 @@ def ingresar_equipos():
     for i in range(1, 5):
         while True:
             nombre = input(f"  Equipo {i}: ").strip().upper()
-            if not nombre.isalpha():
-                print("    No valido, ingrese un pais.")
-                print("")
+            if not nombre.replace(" ", "").isalpha():
+                print("    No valido, por favor ingrese nuevamente.")
                 continue
             if nombre in equipos:
-                print(f"    No valido, el pais ya fue ingresado.")  
-                print("")
+                print(f"    No valido, el pais ya fue ingresado.")
             else:
                 equipos[nombre] = crear_equipo()
-                break   
+                break    
     return equipos
 
 
 
-#Devuelve un diccionario con las estadisticas de un equipo en cero.
+#Devuelve un diccionario con las estadisticas de un equipo en cero
 def crear_equipo():
     return {"pj": 0, "puntos": 0, "gf": 0, "gc": 0, "dg": 0}
 
@@ -84,11 +82,11 @@ def ingresar_resultados(equipos, partidos):
             try:
                 goles_local = int(entrada)
                 if goles_local<0:
-                    print("    No valido, ingrese un numero positivo.")
+                    print("    No valido, por favor ingrese nuevamente.")
                 else:
                     encontrado=True
             except ValueError:
-                print("    No valido, ingrese un numero.\n")
+                print("    No valido, por favor ingrese nuevamente.\n")
 
         # Validar goles del equipo visitante
         encontrado=False
@@ -97,11 +95,11 @@ def ingresar_resultados(equipos, partidos):
             try:
                 goles_visitante = int(entrada)
                 if goles_visitante<0:
-                    print("    No valido, ingrese un numero positivo.")
+                    print("    No valido, por favor ingrese nuevamente.")
                 else:
                     encontrado=True
             except ValueError:
-                print("    No valido, ingrese un numero.\n")
+                print("    No valido, por favor ingrese nuevamente.\n")
 
         resultado = procesar_partido(equipos, local, visitante, goles_local, goles_visitante)
         print(f"    Resultado: {resultado}\n")
@@ -161,7 +159,7 @@ def mostrar_clasificados(tabla):
     
     print(tabla[0][0])
     print("-------------")
-    print("Segundo peusto")
+    print("Segundo puesto")
     
     print(tabla[1][0])
     print("-------------")
