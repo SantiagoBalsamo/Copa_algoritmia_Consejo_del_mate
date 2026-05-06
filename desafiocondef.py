@@ -9,7 +9,7 @@ def ingresar_equipos():
     equipos = {}
     for i in range(1, 5):
         while True:
-            nombre = input(f"  Equipo {i}: ").strip().upper()
+            nombre = " ".join(input(f"  Equipo {i}: ").strip().upper().split())
             if not nombre.replace(" ", "").isalpha():
                 print("    No valido, por favor ingrese nuevamente.")
                 continue
