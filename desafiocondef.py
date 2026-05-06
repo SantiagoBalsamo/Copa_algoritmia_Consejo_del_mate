@@ -159,15 +159,15 @@ def mostrar_clasificados(tabla):
     print("========================\n")
 
     print("------------")
-    print("Primer puesto")
+    print("    Primer puesto")
     
     print(tabla[0][0])
     print("-------------")
-    print("Segundo puesto")
+    print("    Segundo puesto")
     
     print(tabla[1][0])
     print("-------------")
-    print("Tercero puesto")
+    print("    Tercero puesto")
 
     print(tabla[2][0])
     print("-------------")
