@@ -1,4 +1,4 @@
-# Sistema de Clasificacion FIFA 
+#Copa algoritmia 2026 deafio 1
 
 # --- FUNCIONES ---
 
@@ -41,17 +41,15 @@ def procesar_partido(equipos, local, visitante, goles_local, goles_visitante):
 
 
 #Lee los equipos y resultados desde un archivo.txt(validacion de entradas)
-def leer_desde_archivo():
-
-    nombre_archivo = input("Ingrese el nombre del archivo: ").strip()
-
+def validar_archivo(nombre_archivo):
+    
     try:
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
             equipos = {}
             partidos_procesados = set()
             resultados = []
 
-            for linea in archivo:
+            for numero_linea, linea in enumerate(archivo, start=1):
                 linea = linea.strip()
 
                 if not linea:
@@ -59,8 +57,8 @@ def leer_desde_archivo():
 
                 partes = linea.split(",")
                 if len(partes) != 4:
-                    print("    No valido, por favor ingrese nuevamente.")
-                    return {}
+                    print(f"    Línea {numero_linea}: formato inválido.")
+                    return None, None
 
                 local, visitante, goles_local, goles_visitante = partes
 
@@ -68,29 +66,30 @@ def leer_desde_archivo():
                 visitante = " ".join(visitante.strip().upper().split())
 
                 if not local.replace(" ", "").isalpha() or not visitante.replace(" ", "").isalpha():
-                    print("    No valido, por favor ingrese nuevamente.")
-                    return {}
+                    print(f"    Línea {numero_linea}: los nombres solo pueden contener letras.")
+                    return None, None
 
                 if local == visitante:
-                    print("")
-                    return {}
+                    print(f"    Línea {numero_linea}: un equipo no puede jugar contra sí mismo.")
+                    return None, None
 
                 par = tuple(sorted([local, visitante]))
                 if par in partidos_procesados:
-                    print("")
-                    return {}
+                    print(f"    Línea {numero_linea}: partido duplicado.")
+                    return None, None
                 partidos_procesados.add(par)
-          
+
                 try:
                     goles_local     = int(goles_local.strip())
                     goles_visitante = int(goles_visitante.strip())
                 except ValueError:
-                    print("")
-                    return {}
+                    print(f"    Línea {numero_linea}: los goles deben ser números enteros.")
+                    return None, None
 
+                
                 if goles_local < 0 or goles_local > 20 or goles_visitante < 0 or goles_visitante > 20:
-                    print("")
-                    return {}
+                    print(f"    Línea {numero_linea}: los goles deben ser un número entre 0 y 20.")
+                    return None, None
 
                 if local not in equipos:
                     equipos[local] = crear_equipo()
@@ -98,26 +97,34 @@ def leer_desde_archivo():
                     equipos[visitante] = crear_equipo()
 
                 if equipos[local]["pj"] >= 3 or equipos[visitante]["pj"] >= 3:
-                    print("")
-                    return {}
+                    print(f"    Línea {numero_linea}: {local} o {visitante} ya jugaron 3 partidos.")
+                    return None, None
 
-                resultado = procesar_partido(equipos, local, visitante, goles_local, goles_visitante)
-                resultados.append(f"  {local} vs {visitante}\n    Resultado: {resultado}\n")
+                resultados.append((local, visitante, goles_local, goles_visitante))
+                equipos[local]["pj"]     += 1
+                equipos[visitante]["pj"] += 1
 
-            print("\nResultados de cada partido:\n")
-            for r in resultados:
-                print(r)
-            if len(equipos) != 4:
-                print(f"    Porfavor ingrese 4 equipos, actualmente se encontraron {len(equipos)}.")
-                return {}
-            if len(partidos_procesados) != 6:
-                print(f"    Porfavor ingrese 6 partidos,  {len(partidos_procesados)}.")
-                return {}
-        return equipos
+            return equipos, resultados  
 
     except FileNotFoundError:
-        print(f"\n  Error: no se encontro el archivo '{nombre_archivo}'")
-        return {}
+        print(f"    Archivo '{nombre_archivo}' no encontrado.")
+        return None, None
+
+
+def leer_desde_archivo():
+    
+    while True:
+        nombre_archivo = input("\nIngrese el nombre del archivo: ").strip()
+        
+        equipos, resultados = validar_archivo(nombre_archivo)
+        
+        if equipos is not None:
+            return equipos, resultados  
+        
+        print("    Datos no válidos, revise los datos ingresados.\n")  
+
+
+
 
 
 #Calcula la diferencia de gol (GF - GC) para cada equipo
@@ -128,7 +135,7 @@ def calcular_diferencia_gol(equipos):
 
 
 '''
-    Ordena y devuelve la tabla segun los criterios de la FIFA:
+    Ordena y devuelve la tabla:
     1. Mas puntos
     2. Mayor diferencia de gol
     3. Mas goles a favor
@@ -163,38 +170,48 @@ def mostrar_tabla(tabla):
     print(separador + "\n")
 
 
-#Muestra los clasificados en el formato oficial FIFA
+#Muestra los clasificados
 def mostrar_clasificados(tabla):
     
     print("========================")
     print("Posicion de Clasificados")
-    print("========================\n")
+    print("========================")
 
-    print("------------")
-    print("    Primer puesto")
-    print(tabla[0][0])
+    print(   tabla[0][0])
+    print(   tabla[1][0])
     print("-------------")
-    print("    Segundo puesto")
-    print(tabla[1][0])
-    print("-------------")
-    print("    Tercero puesto")
+
+
+    
+    print("Tercero puesto:")
+    print("---------------")
     print(tabla[2][0])
-    print("-------------")
+
+
 
 
 # --- PROGRAMA PRINCIPAL ---
 
 print("=== SISTEMA DE CLASIFICACION FIFA ===\n")
 
-equipos = leer_desde_archivo()
+equipos, resultados = leer_desde_archivo()
 
-if not equipos or any(stats["pj"] != 3 for _, stats in equipos.items()):
-    print("  Error: porfavor ingrese datos validos")
+if not equipos or not resultados:
+    print("  Error: por favor ingrese datos válidos")
 
 else:
-    calcular_diferencia_gol(equipos)
-    tabla = ordenar_tabla(equipos)
-    mostrar_tabla(tabla)
-    mostrar_clasificados(tabla)
+    for equipo in equipos:
+        equipos[equipo]["pj"] = 0
 
+    for local, visitante, goles_local, goles_visitante in resultados:
+        procesar_partido(equipos, local, visitante, goles_local, goles_visitante)
+
+    if any(stats["pj"] != 3 for _, stats in equipos.items()):
+        print("  Error: por favor ingrese datos válidos")
+
+    else:
+        calcular_diferencia_gol(equipos)
+        tabla = ordenar_tabla(equipos)
+        mostrar_tabla(tabla)
+        mostrar_clasificados(tabla)
     
