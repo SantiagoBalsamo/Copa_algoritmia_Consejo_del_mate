@@ -2,9 +2,9 @@
 
 # --- Funciones ---
 
-with open("penales.txt", "r") as archivo:
+with open('DESAFIO 2/penales.txt', "r") as archivo:
     lista= archivo.read().strip().upper()
-
+    
 penales_izquierda=0
 penales_centro=0
 penales_derecha=0
