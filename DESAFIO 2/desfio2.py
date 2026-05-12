@@ -5,17 +5,17 @@
 def leer_archivo():
         try:
             with open('DESAFIO 2/penales.txt', "r") as archivo:
-                lista = archivo.read().strip().upper()
-            return lista   
+                datos = archivo.read().strip().upper()
+            return datos   
         except FileNotFoundError:
             print('ERROR: NO SE ENCONTRO EL ARCHIVO SELECCIONADO')
 
-def contar_penales(lista):
+def contar_penales(datos):
     penales_izquierda = 0
     penales_centro = 0
     penales_derecha = 0
 
-    for letra in lista:
+    for letra in datos:
        try: 
         if letra == "L":
             penales_izquierda = penales_izquierda + 1
