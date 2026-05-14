@@ -6,7 +6,8 @@
 # Lee desde un archivo.txt y toma los datos
 def leer_archivo(nombre_archivo):
     with open(nombre_archivo, "r") as archivo:
-        contenido = archivo.read().strip().upper()
+        contenido = archivo.read().upper()
+        contenido = contenido.replace("\n", "").replace("\r", "").replace(" ", "").strip()
     return contenido
 
 # Valida los datos ingresados
@@ -64,11 +65,9 @@ nombre_archivo = "penales.txt"
 
 
 # si encuentra un dato no valido, pide que se revise el .txt y toque enter para que lo lea nuevamente
-
 while True:
     secuencia = leer_archivo(nombre_archivo)
     es_valida, mensaje = validar_secuencia(secuencia)
-
     if es_valida:
         cant_L, cant_R, cant_C = contar_direcciones(secuencia)
         direccion, maximo = mayor_cantidad(cant_L, cant_R, cant_C)
