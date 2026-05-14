@@ -3,24 +3,13 @@
 # --- Funciones ---
 
 def leer_archivo(nombre_archivo):
-    """Abre el archivo y le otorga permisos de lectura.
-    Se lee directamente el contenido en MAYUSCULA, se reemplazan los caracteres indicados y devuelve una cadena vacia.
-
-    Args:
-        Argumento_1(archivo): Nombre del archivo.txt.
-
-    Returns:
-        Retorna el contenido del archivo con las validaciones sobre caracteres dadas.
-
-    Raises:
-        FileNotFoundError: En caso de que el nombre ingresado no coincida con ningun archivo.    
-    """
-    with open(nombre_archivo, "r") as archivo:
-        contenido = archivo.read().upper()
-        contenido = contenido.replace("\n", "").replace("\r", "").replace(" ", "").strip()
-    return contenido
+    """Lee un archivo de texto y devuelve su contenido en mayúsculas sin espacios ni saltos de línea"""
+    with open(nombre_archivo, "r", encoding="utf-8") as archivo:
+        tabla = str.maketrans("", "", " \n\r")
+        return archivo.read().upper().translate(tabla)
 
 def validar_secuencia(secuencia):
+    """Valida que la secuencia no esté vacía, no supere 1000 caracteres y solo contenga los caracteres: 'L', 'R' o 'C'."""
     if len(secuencia) == 0:
         return False, "El archivo está vacío."
     if len(secuencia) > 1000:
@@ -30,42 +19,37 @@ def validar_secuencia(secuencia):
             return False, f"Carácter inválido encontrado: '{caracter}'. Solo se permiten L, R y C."
     return True, "Secuencia válida."
 
-# Inicia los contadores y suma cuando encunetra el caracter
 def contar_direcciones(secuencia):
+    """Cuenta la cantidad de repeticiones en cada direccion(L, R, C)"""
     return secuencia.count('L'), secuencia.count('R'), secuencia.count('C')
 
-# En caso de empate l>r>c
 def mayor_cantidad(cant_L, cant_R, cant_C):
-    if cant_L >= cant_R and cant_L >= cant_C:
-        direccion = "L"
-        maximo = cant_L
-    elif cant_R >= cant_C:
-        direccion = "R"
-        maximo = cant_R
-    else:
-        direccion = "C"
-        maximo = cant_C
-    return direccion, maximo
+    """Retorna la dirección con mayor cantidad de repeticiones y su valor."""
+    direcciones = {"L": cant_L, "R": cant_R, "C": cant_C}
+    direccion = max(direcciones, key=direcciones.get)
+    return direccion, direcciones[direccion]
 
-
-# Muestra la direccion de penal donde mas se pateo
 def mostrar_resultado(direccion, maximo):
+    """Muestra la dirección de penal con más remates y su cantidad."""
     print("--------")
     print(direccion)
     print(maximo)
     print("--------")
 
 
-
 # --- PROGRAMA PRINCIPAL ---
 
-nombre_archivo = "DESAFIO 2/penales.txt"
+nombre_archivo = "DESAFIO /penales.txt"
 
-# si encuentra un dato no valido, pide que se revise el .txt y toque enter para que lo lea nuevamente
 while True:
-    secuencia = leer_archivo(nombre_archivo)
-    es_valida = validar_secuencia(secuencia)
-    mensaje = validar_secuencia(secuencia)
+    try:
+        secuencia = leer_archivo(nombre_archivo)
+    except FileNotFoundError:
+        print("ERROR: EL ARCHIVO INDICADO NO EXISTE EN EL DIRECTORIO")
+        print(f"PORFAVOR CORRIJA EL ARCHIVO {nombre_archivo} Y PRESIONE "ENTER" PARA REINTENTAR")
+        input()
+        continue
+    es_valida, mensaje = validar_secuencia(secuencia)
     if es_valida:
         cant_L, cant_R, cant_C = contar_direcciones(secuencia)
         direccion, maximo = mayor_cantidad(cant_L, cant_R, cant_C)
@@ -75,10 +59,3 @@ while True:
         print("Error:", mensaje)
         print("Corregí el archivo penales.txt y presioná ENTER para reintentar...")
         input()
-
-
-
-
-
-
-        
