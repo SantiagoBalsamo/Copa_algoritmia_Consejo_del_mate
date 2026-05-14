@@ -61,7 +61,7 @@ def mostrar_resultado(direccion, maximo):
 
 
 # --- PROGRAMA PRINCIPAL ---
-nombre_archivo = "penales.txt"
+nombre_archivo = "penales"
 
 
 # si encuentra un dato no valido, pide que se revise el .txt y toque enter para que lo lea nuevamente
@@ -77,3 +77,5 @@ while True:
         print("Error:", mensaje)
         print("Corregí el archivo penales.txt y presioná ENTER para reintentar...")
         input()  
+        
+        
