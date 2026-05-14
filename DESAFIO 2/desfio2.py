@@ -24,10 +24,10 @@ def contar_direcciones(secuencia):
     return secuencia.count('L'), secuencia.count('R'), secuencia.count('C')
 
 def mayor_cantidad(cant_L, cant_R, cant_C):
-    """Retorna la dirección con mayor cantidad de repeticiones y su valor, respetando la prioridad L > R > C en caso de empate."""
-    direcciones = [("L", cant_L), ("R", cant_R), ("C", cant_C)]
-    direccion, maximo = max(direcciones, key=lambda x: x[1])
-    return direccion, maximo
+    """Retorna la dirección con mayor cantidad de repeticiones y su valor."""
+    direcciones = {"L": cant_L, "R": cant_R, "C": cant_C}
+    direccion = max(direcciones, key=direcciones.get)
+    return direccion, direcciones[direccion]
 
 def mostrar_resultado(direccion, maximo):
     """Muestra la dirección más frecuente y su cantidad de apariciones."""
@@ -35,11 +35,11 @@ def mostrar_resultado(direccion, maximo):
     print(direccion)
     print(maximo)
     print("--------")
-    
+
 
 # --- PROGRAMA PRINCIPAL ---
 
-nombre_archivo = "DESAFIO 2/penales.txt"
+nombre_archivo = "./DESAFIO 2/penales.txt"
 
 try:
     secuencia = leer_archivo(nombre_archivo)
@@ -52,5 +52,5 @@ else:
         direccion, maximo = mayor_cantidad(cant_L, cant_R, cant_C)
         mostrar_resultado(direccion, maximo)
     else:
-        print("Error:", mensaje)
+        print(f"Error: {mensaje}")
         
