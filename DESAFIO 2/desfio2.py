@@ -39,7 +39,7 @@ def mostrar_resultado(direccion, maximo):
 
 # --- PROGRAMA PRINCIPAL ---
 
-nombre_archivo = "DESAFIO /penales.txt"
+nombre_archivo = "./DESAFIO 2/penales.txt"
 
 try:
     secuencia = leer_archivo(nombre_archivo)
@@ -52,5 +52,5 @@ else:
         direccion, maximo = mayor_cantidad(cant_L, cant_R, cant_C)
         mostrar_resultado(direccion, maximo)
     else:
-        print("Error:", mensaje)
+        print(f"Error: {mensaje}")
         
