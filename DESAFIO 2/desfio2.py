@@ -45,9 +45,7 @@ while True:
     try:
         secuencia = leer_archivo(nombre_archivo)
     except FileNotFoundError:
-        print("ERROR: EL ARCHIVO INDICADO NO EXISTE EN EL DIRECTORIO")
-        print(f"PORFAVOR CORRIJA EL ARCHIVO {nombre_archivo} Y PRESIONE "ENTER" PARA REINTENTAR")
-        input()
+        print(f"ERROR: EL ARCHIVO {nombre_archivo} NO EXISTE EN EL DIRECTORIO")
         continue
     es_valida, mensaje = validar_secuencia(secuencia)
     if es_valida:
@@ -57,5 +55,4 @@ while True:
         break
     else:
         print("Error:", mensaje)
-        print("Corregí el archivo penales.txt y presioná ENTER para reintentar...")
-        input()
+        
