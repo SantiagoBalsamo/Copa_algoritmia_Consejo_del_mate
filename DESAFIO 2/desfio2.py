@@ -3,7 +3,7 @@
 # --- Funciones ---
 
 def leer_archivo(nombre_archivo):
-    """Lee un archivo de texto y devuelve su contenido en mayúsculas sin espacios ni saltos de línea"""
+    """Lee un archivo de texto y devuelve su contenido en mayúsculas sin espacios ni saltos de línea."""
     with open(nombre_archivo, "r", encoding="utf-8") as archivo:
         tabla = str.maketrans("", "", " \n\r")
         return archivo.read().upper().translate(tabla)
@@ -20,7 +20,7 @@ def validar_secuencia(secuencia):
     return True, "Secuencia válida."
 
 def contar_direcciones(secuencia):
-    """Cuenta la cantidad de repeticiones en cada direccion(L, R, C)"""
+    """Cuenta la cantidad de repeticiones en cada dirección (L, R, C)."""
     return secuencia.count('L'), secuencia.count('R'), secuencia.count('C')
 
 def mayor_cantidad(cant_L, cant_R, cant_C):
@@ -30,7 +30,7 @@ def mayor_cantidad(cant_L, cant_R, cant_C):
     return direccion, maximo
 
 def mostrar_resultado(direccion, maximo):
-    """Muestra la dirección de penal con más remates y su cantidad."""
+    """Muestra la dirección más frecuente y su cantidad de apariciones."""
     print("--------")
     print(direccion)
     print(maximo)
