@@ -41,18 +41,16 @@ def mostrar_resultado(direccion, maximo):
 
 nombre_archivo = "DESAFIO /penales.txt"
 
-while True:
-    try:
-        secuencia = leer_archivo(nombre_archivo)
-    except FileNotFoundError:
-        print(f"ERROR: EL ARCHIVO {nombre_archivo} NO EXISTE EN EL DIRECTORIO")
-        continue
+try:
+    secuencia = leer_archivo(nombre_archivo)
+except FileNotFoundError:
+    print(f"ERROR: EL ARCHIVO '{nombre_archivo}' NO EXISTE EN EL DIRECTORIO")
+else:
     es_valida, mensaje = validar_secuencia(secuencia)
     if es_valida:
         cant_L, cant_R, cant_C = contar_direcciones(secuencia)
         direccion, maximo = mayor_cantidad(cant_L, cant_R, cant_C)
         mostrar_resultado(direccion, maximo)
-        break
     else:
         print("Error:", mensaje)
         
