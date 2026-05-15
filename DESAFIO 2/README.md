@@ -83,7 +83,7 @@ El programa elimina `\r` y `\n` al leer el archivo, por lo que es compatible con
 ## Ejecución
 
 ```bash
-python desafio2.py
+python "DESAFIO 2/desafio2.py"
 ```
 
 ## Autores
