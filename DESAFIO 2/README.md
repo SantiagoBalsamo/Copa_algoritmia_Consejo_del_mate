@@ -1,25 +1,99 @@
-# Copa Algoritmia UADE 2026— Desafío 2
-# --- EL CONSEJO DEL MATE ---
+### Copa de Algoritmia y Programación UADE 2026
+# Desafío 2 — Predicción de Penales
 
-# Lenguaje utilizado: Python
-# IDE utilizado: Visual Studio Code
-# Librerias utilizadas: Ninguna
- 
+## Descripción
 
-# ¿Qué hace el programa?
-El código lee un archivo llamado `penales.txt` que tiene una secuencia de letras:
-* **L**: Izquierda
-* **R**: Derecha
-* **C**: Centro
+Sistema que analiza el historial de penales de un jugador rival para predecir su dirección más frecuente, con el objetivo de asistir al arquero en la toma de decisiones.
 
-Lo que hace es contar cuántas veces aparece cada una y fijarse cuál es la que más se repite. Al final, imprime la letra ganadora y la cantidad de veces que salió.
+## Estructura del proyecto
 
-##  En caso de empate absoluto (Prioridad Táctica)
-Como decía el PDF de la consigna, si hay un empate en la cantidad de tiros, usamos la regla de prioridad:
-1.  **Izquierda (L)** le gana a todos.
-2.  **Derecha (R)** le gana al Centro.
-3.  **Centro (C)** queda último.
+```
+DESAFIO 2/
+├── desafio2.py
+└── penales.txt
+```
 
-O sea: **L > R > C**. Esto ya lo dejamos configurado en los `if/elif` de la función `direccion_maxima`.
+## Formato de entrada
 
----
+El archivo `penales.txt` debe contener una sola línea con la secuencia de penales, donde cada carácter representa una dirección:
+
+| Carácter | Dirección |
+|----------|-----------|
+| L | Izquierda |
+| R | Derecha |
+| C | Centro |
+
+Ejemplo:
+'''
+LRRCLRRLLR
+
+'''
+
+## Formato de salida
+
+La dirección más frecuente en la primera línea y su cantidad de apariciones en la segunda:
+
+```
+R
+5
+```
+
+## Reglas
+
+- La secuencia debe tener entre 1 y 1000 caracteres.
+- Solo se permiten los caracteres `L`, `R` y `C`.
+- En caso de empate, se aplica la prioridad táctica: `L > R > C`.
+
+## Ejemplos
+
+| Entrada | Salida |
+|--------|--------|
+| `LRRCLRRLLR` | `R / 5` |
+| `LLLLL` | `L / 5` |
+| `CRCRCRR` | `R / 4` |
+| `LLRR` | `L / 2` |
+
+## Manejo de errores
+
+| Error | Mensaje |
+|-------|---------|
+| Archivo no encontrado | `ERROR: EL ARCHIVO 'nombre' NO EXISTE EN EL DIRECTORIO` |
+| Archivo vacío | `El archivo está vacío.` |
+| Secuencia mayor a 1000 caracteres | `La secuencia supera los 1000 caracteres.` |
+| Carácter inválido | `Carácter inválido encontrado: 'X'. Solo se permiten L, R y C.` |
+
+## Funciones
+
+| Función | Descripción |
+|---------|-------------|
+| `leer_archivo(nombre_archivo)` | Lee el archivo y devuelve su contenido en mayúsculas sin espacios ni saltos de línea. |
+| `validar_secuencia(secuencia)` | Valida longitud y caracteres de la secuencia. |
+| `contar_direcciones(secuencia)` | Cuenta las apariciones de cada dirección. |
+| `mayor_cantidad(cant_L, cant_R, cant_C)` | Retorna la dirección más frecuente respetando el desempate `L > R > C`. |
+| `mostrar_resultado(direccion, maximo)` | Muestra la dirección ganadora y su frecuencia. |
+
+## Compatibilidad
+
+El programa elimina `\r` y `\n` al leer el archivo, por lo que es compatible con archivos creados en Windows, Linux y Mac.
+
+## Requisitos
+
+- Python 3.7 o superior.
+- No requiere librerías externas.
+- Compatible con Windows, Linux y Mac.
+
+## Ejecución
+
+```bash
+python desafio2.py
+```
+
+## Autores
+
+- Nombre 1
+- Nombre 2
+- Nombre 3
+- Nombre 4
+- Nombre 5
+
+Copa de Algoritmia y Programación UADE 2026
