@@ -76,11 +76,11 @@ R
 
 El programa elimina `\r` y `\n` al leer el archivo, por lo que es compatible con archivos creados en Windows, Linux y Mac.
 
-## Requisitos
+## Tecnologías
 
-- Python 3.7 o superior.
-- No requiere librerías externas.
-- Compatible con Windows, Linux y Mac.
+- Lenguaje utilizado: Python
+- Librerías utilizadas: No se utilizaron librerías externas.
+- Compatible con: Windows, Linux y Mac.
 
 ## Ejecución
 
