@@ -39,12 +39,13 @@ def mostrar_resultado(direccion, maximo):
 
 # --- PROGRAMA PRINCIPAL ---
 
-nombre_archivo = "./DESAFIO 2/penales.txt"
+nombre_archivo = "./DESAFI 2/penales.txt"
 
 try:
     secuencia = leer_archivo(nombre_archivo)
 except FileNotFoundError:
     print(f"ERROR: EL ARCHIVO '{nombre_archivo}' NO EXISTE EN EL DIRECTORIO")
+    print("COMPRUEBE EL NOMBRE DEL ARCHIVO E INTENTELO NUEVAMENTE")
 else:
     es_valida, mensaje = validar_secuencia(secuencia)
     if es_valida:

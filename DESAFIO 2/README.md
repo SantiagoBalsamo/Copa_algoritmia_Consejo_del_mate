@@ -56,7 +56,7 @@ R
 
 | Error | Mensaje |
 |-------|---------|
-| Archivo no encontrado | `ERROR: EL ARCHIVO 'nombre' NO EXISTE EN EL DIRECTORIO` |
+| Archivo no encontrado | `ERROR: EL ARCHIVO 'nombre' NO EXISTE EN EL DIRECTORIO` / `COMPRUEBE EL NOMBRE DEL ARCHIVO E INTENTELO NUEVAMENTE` |
 | Archivo vacío | `El archivo está vacío.` |
 | Secuencia mayor a 1000 caracteres | `La secuencia supera los 1000 caracteres.` |
 | Carácter inválido | `Carácter inválido encontrado: 'X'. Solo se permiten L, R y C.` |
