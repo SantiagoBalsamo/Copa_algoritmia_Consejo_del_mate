@@ -1,5 +1,5 @@
-### Copa de Algoritmia y Programación UADE 2026
-# Desafío 2 — Predicción de Penales
+# Copa de Algoritmia y Programación UADE 2026
+## Desafío 2 — Predicción de Penales
 
 ## Descripción
 
@@ -24,10 +24,9 @@ El archivo `penales.txt` debe contener una sola línea con la secuencia de penal
 | C | Centro |
 
 Ejemplo:
-'''
+```
 LRRCLRRLLR
-
-'''
+```
 
 ## Formato de salida
 
@@ -80,7 +79,6 @@ El programa elimina `\r` y `\n` al leer el archivo, por lo que es compatible con
 
 - Lenguaje utilizado: Python
 - Librerías utilizadas: No se utilizaron librerías externas.
-- Compatible con: Windows, Linux y Mac.
 
 ## Ejecución
 
@@ -95,5 +93,3 @@ python desafio2.py
 - Nombre 3
 - Nombre 4
 - Nombre 5
-
-Copa de Algoritmia y Programación UADE 2026
