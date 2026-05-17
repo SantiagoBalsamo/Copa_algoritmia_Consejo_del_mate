@@ -88,8 +88,8 @@ python "DESAFIO 2/desafio2.py"
 
 ## Autores
 
-- Nombre 1
-- Nombre 2
-- Nombre 3
-- Nombre 4
-- Nombre 5
+- Acuña Lisandro
+- Bálsamo Santiago
+- Flores Lihuen
+- Raber Patricio
+- Zacarías Austin 
