@@ -39,7 +39,7 @@ def mostrar_resultado(direccion, maximo):
 
 # --- PROGRAMA PRINCIPAL ---
 
-nombre_archivo = "./DESAFIO 2/penales.txt"
+nombre_archivo = "penales.txt"
 
 try:
     secuencia = leer_archivo(nombre_archivo)
