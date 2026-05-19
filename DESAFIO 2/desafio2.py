@@ -54,4 +54,3 @@ else:
         mostrar_resultado(direccion, maximo)
     else:
         print(f"Error: {mensaje}")
-        
