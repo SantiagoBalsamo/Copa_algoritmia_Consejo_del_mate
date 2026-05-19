@@ -1,20 +1,13 @@
-# ============================================================
-#  Copa de Algoritmia y Programación - UADE 2026
-#  DESAFÍO 3: "LA CANCHA INTELIGENTE"
-# ============================================================
+# --- Copa algoritmia 2026 --- Desafio 3 ---
 
-# ── Constantes ──────────────────────────────────────────────
+# Constantes 
 FILAS    = 100
 COLUMNAS = 60
 EQUIPOS_VALIDOS = ("A", "B")
 ROLES_VALIDOS   = ("arquero", "defensor", "mediocampista", "delantero")
 
-
-# ════════════════════════════════════════════════════════════
-#  TAREA 1 – Crear la cancha
-# ════════════════════════════════════════════════════════════
 def crear_cancha():
-    """Retorna una matriz 100×60 inicializada con '.'."""
+    """Retorna una matriz 100x60 inicializada con '.' ."""
     cancha = []
     for _ in range(FILAS):
         fila = []
@@ -24,9 +17,6 @@ def crear_cancha():
     return cancha
 
 
-# ════════════════════════════════════════════════════════════
-#  TAREA 2 – Posicionar jugadores
-# ════════════════════════════════════════════════════════════
 def posicionar_jugador(cancha, jugadores, nombre, equipo, fila, columna, rol, tiene_pelota):
     """
     Agrega un jugador a la cancha y a la lista de jugadores.
@@ -78,9 +68,6 @@ def posicionar_jugador(cancha, jugadores, nombre, equipo, fila, columna, rol, ti
     return True
 
 
-# ════════════════════════════════════════════════════════════
-#  TAREA 3 – Mover jugadores
-# ════════════════════════════════════════════════════════════
 def mover_jugador(cancha, jugador, direccion):
     """
     Mueve al jugador una celda en la dirección indicada.
@@ -132,9 +119,6 @@ def mover_jugador(cancha, jugador, direccion):
     return True
 
 
-# ════════════════════════════════════════════════════════════
-#  TAREA 4 – Calcular distancia Manhattan a la pelota
-# ════════════════════════════════════════════════════════════
 def calcular_distancias(jugadores):
     """
     Calcula la distancia Manhattan de cada jugador respecto al que tiene la pelota.
@@ -173,10 +157,7 @@ def calcular_distancias(jugadores):
         print(f"\nEmpate en distancia mínima ({minima}): {', '.join(mas_cercanos)}.")
 
 
-# ════════════════════════════════════════════════════════════
-#  TAREA 5 – Detectar posibilidad de pase
-# ════════════════════════════════════════════════════════════
-def _hay_bloqueo(cancha, fila1, col1, fila2, col2, equipo_rival):
+def hay_bloqueo(cancha, fila1, col1, fila2, col2, equipo_rival):
     """
     Verifica si existe un rival o 'X' entre dos posiciones en línea recta.
     Retorna True si el camino está bloqueado.
@@ -246,9 +227,6 @@ def detectar_pases(cancha, jugadores):
     return pases_posibles
 
 
-# ════════════════════════════════════════════════════════════
-#  TAREA 6 – Detectar camino libre al arco
-# ════════════════════════════════════════════════════════════
 def detectar_camino_libre(cancha, jugadores):
     """
     Analiza todos los delanteros y determina si tienen camino libre al arco rival.
@@ -301,9 +279,6 @@ def detectar_camino_libre(cancha, jugadores):
         print("  (No hay delanteros registrados en la cancha.)")
 
 
-# ════════════════════════════════════════════════════════════
-#  UTILIDADES
-# ════════════════════════════════════════════════════════════
 def mostrar_cancha(cancha, filas_mostrar=10, cols_mostrar=20):
     """Muestra una porción de la cancha para verificación visual."""
     print(f"\n── Vista parcial de la cancha (primeras {filas_mostrar} filas × {cols_mostrar} columnas) ──")
@@ -320,9 +295,6 @@ def buscar_jugador(jugadores, nombre):
     return None
 
 
-# ════════════════════════════════════════════════════════════
-#  PROGRAMA PRINCIPAL – casos de prueba
-# ════════════════════════════════════════════════════════════
 def main():
     print("=" * 60)
     print("  Copa UADE 2026 – Desafío 3: La Cancha Inteligente")
@@ -388,7 +360,6 @@ def main():
     print("\n[TAREA 5] Detectar pases posibles...")
     detectar_pases(cancha, jugadores)
 
-    # ── Tarea 6: Camino libre al arco ───────────────────────
     # Posicionar delantero argentino en mitad ofensiva con camino libre
     posicionar_jugador(cancha, jugadores, "Lautaro", "A", 40, 40, "delantero", False)
     # Posicionar delantero brasileño en mitad ofensiva con rival bloqueando
