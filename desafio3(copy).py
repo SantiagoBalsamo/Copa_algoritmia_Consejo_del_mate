@@ -5,6 +5,11 @@ FILAS           = 100
 COLUMNAS        = 60
 EQUIPOS_VALIDOS = ("A", "B")
 ROLES_VALIDOS   = ("arquero", "defensor", "mediocampista", "delantero")
+RIVAL           = {"A": "B", "B": "A"}
+CONFIG_EQUIPOS  = {
+    "A": {"mitad": (30, 59), "arco": 59},
+    "B": {"mitad": (0,  29), "arco": 0},
+}
 
 def crear_cancha():
     """Retorna una matriz 100×60 inicializada con '.'."""
@@ -87,16 +92,16 @@ def mover_jugador(cancha, jugador, direccion):
               f"(fuera de la cancha).")
         return False
 
-    celda_destino = cancha[nueva_fila][nueva_columna]
+    celda_destino  = cancha[nueva_fila][nueva_columna]
+    mensajes_error = {
+        "X": "zona bloqueada",
+        "A": "celda ocupada por otro jugador",
+        "B": "celda ocupada por otro jugador",
+    }
 
-    if celda_destino == "X":
+    if celda_destino in mensajes_error:
         print(f"  MOVIMIENTO INVÁLIDO: '{jugador['nombre']}' no puede moverse hacia {direccion} "
-              f"(zona bloqueada).")
-        return False
-
-    if celda_destino in ("A", "B"):
-        print(f"  MOVIMIENTO INVÁLIDO: '{jugador['nombre']}' no puede moverse hacia {direccion} "
-              f"(celda ocupada por otro jugador).")
+              f"({mensajes_error[celda_destino]}).")
         return False
 
     cancha[jugador["fila"]][jugador["columna"]] = "."
@@ -114,11 +119,6 @@ def buscar_portador(jugadores):
         if j["tiene_pelota"]:
             return j
     return None
-
-
-def rival_de(equipo):
-    """Retorna el equipo rival dado un equipo."""
-    return "B" if equipo == "A" else "A"
 
 
 def calcular_distancias(jugadores):
@@ -187,7 +187,7 @@ def detectar_pases(cancha, jugadores):
         print("  ERROR: Ningún jugador tiene la pelota.")
         return
 
-    equipo_rival   = rival_de(portador["equipo"])
+    equipo_rival   = RIVAL[portador["equipo"]]
     pases_posibles = []
 
     print(f"\n  ── Pases posibles para '{portador['nombre']}' ──")
@@ -234,14 +234,10 @@ def detectar_camino_libre(cancha, jugadores):
         equipo  = j["equipo"]
         fila    = j["fila"]
         columna = j["columna"]
-        rival   = rival_de(equipo)
+        rival   = RIVAL[equipo]
 
-        config_equipo = {
-            "A": {"mitad": (30, 59), "arco": 59},
-            "B": {"mitad": (0,  29), "arco": 0},
-        }
-        col_inicio, col_fin = config_equipo[equipo]["mitad"]
-        col_arco_rival      = config_equipo[equipo]["arco"]
+        col_inicio, col_fin = CONFIG_EQUIPOS[equipo]["mitad"]
+        col_arco_rival      = CONFIG_EQUIPOS[equipo]["arco"]
         en_mitad_ofensiva   = (col_inicio <= columna <= col_fin)
 
         if not en_mitad_ofensiva:
@@ -398,7 +394,6 @@ def main():
             opciones[opcion]()
         else:
             print("  Opción no válida. Ingrese un número del 0 al 7.")
-
 
 if __name__ == "__main__":
     main()
