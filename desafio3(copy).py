@@ -1,6 +1,9 @@
-# --- Copa algoritmia 2026 --- Desafio 3 ---
+# ============================================================
+#  Copa de Algoritmia y Programación - UADE 2026
+#  DESAFÍO 3: "LA CANCHA INTELIGENTE"
+# ============================================================
 
-# Constantes 
+# ── Constantes ──────────────────────────────────────────────
 FILAS           = 100
 COLUMNAS        = 60
 EQUIPOS_VALIDOS = ("A", "B")
@@ -11,8 +14,10 @@ CONFIG_EQUIPOS  = {
     "B": {"mitad": (0,  29), "arco": 0},
 }
 
-# FUNCIONES
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 1 – Crear la cancha
+# ════════════════════════════════════════════════════════════
 def crear_cancha():
     """Crea e inicializa la cancha de juego.
 
@@ -28,6 +33,9 @@ def crear_cancha():
     return cancha
 
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 2 – Posicionar jugadores
+# ════════════════════════════════════════════════════════════
 def posicionar_jugador(
     cancha,
     jugadores,
@@ -93,6 +101,9 @@ def posicionar_jugador(
     return True
 
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 3 – Mover jugadores
+# ════════════════════════════════════════════════════════════
 def mover_jugador(cancha, jugador, direccion):
     """Mueve un jugador una celda en la dirección indicada.
 
@@ -148,6 +159,9 @@ def mover_jugador(cancha, jugador, direccion):
     return True
 
 
+# ════════════════════════════════════════════════════════════
+#  UTILIDADES INTERNAS
+# ════════════════════════════════════════════════════════════
 def buscar_portador(jugadores):
     """Busca y retorna el jugador que tiene la pelota.
 
@@ -202,6 +216,34 @@ def pedir_entero(mensaje, minimo, maximo):
             print("  Por favor ingrese un número entero válido.")
 
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 4 – Calcular distancia Manhattan a la pelota
+# ════════════════════════════════════════════════════════════
+def pedir_opcion(titulo, opciones):
+    """Muestra opciones numeradas y solicita al usuario elegir una.
+
+    Repite la solicitud hasta recibir un número válido.
+
+    Args:
+        titulo: Texto descriptivo que se muestra antes de las opciones.
+        opciones: Lista de strings con las opciones disponibles.
+
+    Returns:
+        String con el valor de la opción elegida.
+    """
+    print(f"\n  {titulo}")
+    for i, opcion in enumerate(opciones, 1):
+        print(f"    {i}. {opcion}")
+    while True:
+        try:
+            valor = int(input("  Ingrese el número de su elección: "))
+            if 1 <= valor <= len(opciones):
+                return opciones[valor - 1]
+            print(f"  Por favor ingrese un número entre 1 y {len(opciones)}.")
+        except ValueError:
+            print("  Por favor ingrese un número entero válido.")
+
+
 def calcular_distancias(jugadores):
     """Calcula y muestra la distancia Manhattan de cada jugador al portador.
 
@@ -243,6 +285,9 @@ def calcular_distancias(jugadores):
         print(f"\n  Empate en distancia mínima ({minima}): {', '.join(mas_cercanos)}.")
 
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 5 – Detectar posibilidad de pase
+# ════════════════════════════════════════════════════════════
 def hay_bloqueo(
     cancha,
     fila1,
@@ -335,6 +380,9 @@ def detectar_pases(cancha, jugadores):
         print("  No hay pases posibles disponibles.")
 
 
+# ════════════════════════════════════════════════════════════
+#  TAREA 6 – Detectar camino libre al arco
+# ════════════════════════════════════════════════════════════
 def detectar_camino_libre(cancha, jugadores):
     """Detecta qué delanteros tienen camino libre al arco rival.
 
@@ -392,6 +440,9 @@ def detectar_camino_libre(cancha, jugadores):
         print("  (No hay delanteros registrados en la cancha.)")
 
 
+# ════════════════════════════════════════════════════════════
+#  UTILIDADES DE VISUALIZACIÓN
+# ════════════════════════════════════════════════════════════
 def mostrar_cancha(cancha):
     """Muestra una vista parcial de la cancha por consola.
 
@@ -434,6 +485,9 @@ def mostrar_menu():
     print("=" * 50)
 
 
+# ════════════════════════════════════════════════════════════
+#  MENÚ INTERACTIVO
+# ════════════════════════════════════════════════════════════
 def menu_agregar_jugador(cancha, jugadores):
     """Solicita los datos al usuario y agrega un nuevo jugador a la cancha.
 
@@ -450,15 +504,11 @@ def menu_agregar_jugador(cancha, jugadores):
         print("  ERROR: El nombre no puede estar vacío.")
         return
 
-    equipo  = input("  Equipo (A/B): ").strip().upper()
-    fila    = pedir_entero("  Fila (0-99): ", 0, 99)
-    columna = pedir_entero("  Columna (0-59): ", 0, 59)
-
-    print("  Roles disponibles: arquero, defensor, mediocampista, delantero")
-    rol = input("  Rol: ").strip().lower()
-
-    respuesta    = input("  ¿Tiene la pelota? (s/n): ").strip().lower()
-    tiene_pelota = respuesta == "s"
+    equipo       = pedir_opcion("Equipo:", list(EQUIPOS_VALIDOS))
+    fila         = pedir_entero("  Fila (0-99): ", 0, 99)
+    columna      = pedir_entero("  Columna (0-59): ", 0, 59)
+    rol          = pedir_opcion("Rol:", list(ROLES_VALIDOS))
+    tiene_pelota = pedir_opcion("¿Tiene la pelota?:", ["Sí", "No"]) == "Sí"
 
     posicionar_jugador(cancha, jugadores, nombre, equipo, fila, columna, rol, tiene_pelota)
 
@@ -490,13 +540,7 @@ def menu_mover_jugador(cancha, jugadores):
         print(f"  ERROR: No se encontró al jugador '{nombre}'.")
         return
 
-    print("  Direcciones válidas: arriba, abajo, izquierda, derecha")
-    direccion = input("  Dirección: ").strip().lower()
-
-    if not direccion:
-        print("  ERROR: La dirección no puede estar vacía.")
-        return
-
+    direccion = pedir_opcion("Dirección:", ["arriba", "abajo", "izquierda", "derecha"])
     mover_jugador(cancha, jugador, direccion)
 
 
@@ -520,9 +564,9 @@ def menu_agregar_obstaculo(cancha):
         print(f"  OK: Obstáculo colocado en ({fila}, {columna}).")
 
 
-
+# ════════════════════════════════════════════════════════════
 #  PROGRAMA PRINCIPAL
-
+# ════════════════════════════════════════════════════════════
 def ejecutar_casos_prueba(cancha, jugadores):
     """Ejecuta un conjunto de casos mínimos requeridos por la consigna.
 
@@ -543,18 +587,18 @@ def ejecutar_casos_prueba(cancha, jugadores):
     print("  CASOS DE PRUEBA MÍNIMOS")
     print(separador)
 
-    # Obstáculo 
+    # ── Obstáculo ────────────────────────────────────────
     cancha[10][15] = "X"
     print("\n  Obstáculo 'X' colocado en (10, 15).")
 
-    # Posicionar jugadores 
+    # ── Tarea 2: Posicionar jugadores ────────────────────
     print(f"\n{separador}")
     print("  [TAREA 2] Posicionando jugadores")
     print(separador)
 
     # Casos válidos
     posicionar_jugador(cancha, jugadores, "Messi",       "A", 10, 10, "delantero",     True)
-    posicionar_jugador(cancha, jugadores, "Di Maria",    "A", 10, 12, "mediocampista", False)
+    posicionar_jugador(cancha, jugadores, "Di Maria",    "A", 10, 17, "mediocampista", False)
     posicionar_jugador(cancha, jugadores, "Mac Allister","A",  5, 10, "mediocampista", False)
     posicionar_jugador(cancha, jugadores, "Alvarez",     "A", 40, 40, "delantero",     False)
     posicionar_jugador(cancha, jugadores, "Romero",      "A", 20,  5, "defensor",      False)
@@ -566,29 +610,26 @@ def ejecutar_casos_prueba(cancha, jugadores):
 
     # Casos de error
     print("\n  -- Errores esperados --")
-    posicionar_jugador(cancha, jugadores, "Error1", "A", 10, 10, "delantero",      False)  
-    posicionar_jugador(cancha, jugadores, "Error2", "C",  5,  5, "defensor",       False)  
-    posicionar_jugador(cancha, jugadores, "Error3", "A", 200, 5, "defensor",       False)  
-    posicionar_jugador(cancha, jugadores, "Error4", "B", 30, 30, "centrocampista", False)  
-    posicionar_jugador(cancha, jugadores, "Error5", "A",  7,  7, "arquero",        True)   
+    posicionar_jugador(cancha, jugadores, "Error1", "A", 10, 10, "delantero",      False)  # celda ocupada
+    posicionar_jugador(cancha, jugadores, "Error2", "C",  5,  5, "defensor",       False)  # equipo inválido
+    posicionar_jugador(cancha, jugadores, "Error3", "A", 200, 5, "defensor",       False)  # fuera de límites
+    posicionar_jugador(cancha, jugadores, "Error4", "B", 30, 30, "centrocampista", False)  # rol inválido
+    posicionar_jugador(cancha, jugadores, "Error5", "A",  7,  7, "arquero",        True)   # doble pelota
 
-    #  Movimientos 
+    # ── Tarea 3: Movimientos ─────────────────────────────
     print(f"\n{separador}")
     print("  [TAREA 3] Movimientos de jugadores")
     print(separador)
 
     messi = buscar_jugador(jugadores, "Messi")
 
-    # Movimiento válido
+    # Movimiento válido: avanza de col 10 a 14
+    mover_jugador(cancha, messi, "derecha")
+    mover_jugador(cancha, messi, "derecha")
+    mover_jugador(cancha, messi, "derecha")
     mover_jugador(cancha, messi, "derecha")
 
-    # Movimiento inválido: celda ocupada (Di Maria en col 12)
-    mover_jugador(cancha, messi, "derecha")
-
-    # Movimiento inválido: zona bloqueada (obstáculo en col 15)
-    mover_jugador(cancha, messi, "abajo")
-    mover_jugador(cancha, messi, "derecha")
-    mover_jugador(cancha, messi, "derecha")
+    # Movimiento inválido: zona bloqueada (obstáculo X en col 15)
     mover_jugador(cancha, messi, "derecha")
 
     # Movimiento inválido: fuera de la cancha
@@ -599,22 +640,30 @@ def ejecutar_casos_prueba(cancha, jugadores):
     mover_jugador(cancha, arquero, "arriba")
     mover_jugador(cancha, arquero, "izquierda")
 
-    # Distancias Manhattan 
+    # ── Tarea 4: Distancias Manhattan ────────────────────
     print(f"\n{separador}")
     print("  [TAREA 4] Distancias Manhattan a la pelota")
     print(separador)
     calcular_distancias(jugadores)
 
+    # ── Tarea 5: Pases ───────────────────────────────────
     print(f"\n{separador}")
     print("  [TAREA 5] Detectar pases posibles")
     print(separador)
 
+    # Messi y Di Maria están en la misma fila → pase posible
+    # Vinicius en col 20 está entre ellos → bloquea si es rival
     detectar_pases(cancha, jugadores)
 
+    # ── Tarea 6: Camino libre al arco ────────────────────
     print(f"\n{separador}")
     print("  [TAREA 6] Camino libre al arco")
     print(separador)
 
+    # Alvarez: delantero argentino en col 40 (mitad ofensiva) → camino libre
+    # Dybala: delantero argentino en col 20 (no está en mitad ofensiva) → sin camino
+    # Vinicius: delantero brasileño en col 20 (mitad ofensiva Brasil) → verificar
+    # Paqueta: delantero brasileño en col 18 (mitad ofensiva Brasil) → verificar
     detectar_camino_libre(cancha, jugadores)
 
     print(f"\n{separador}")
@@ -640,8 +689,12 @@ def main():
     jugadores = []
     print("\n  Cancha 100×60 creada correctamente.")
 
-    # Ejecuta casos de prueba mínimos 
-    respuesta = input("\n  ¿Desea ejecutar los casos de prueba mínimos? (s/n): ").strip().lower()
+    # Ejecutar casos de prueba mínimos requeridos por la consigna
+    while True:
+        respuesta = input("\n  ¿Desea ejecutar los casos de prueba mínimos? (s/n): ").strip().lower()
+        if respuesta in ("s", "n"):
+            break
+        print("  Por favor ingrese 's' para sí o 'n' para no.")
     if respuesta == "s":
         ejecutar_casos_prueba(cancha, jugadores)
 
@@ -666,6 +719,7 @@ def main():
             opciones[opcion]()
         else:
             print("  Opción no válida. Ingrese un número del 0 al 7.")
+
 
 if __name__ == "__main__":
     main()
