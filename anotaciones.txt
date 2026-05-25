@@ -1,0 +1,19 @@
+1- ver cancha completa
+
+2-validar solo letras
+-validar solo a o B
+validar solo numeros
+volver a pedir los datos y q no muestre el menu
+
+
+mover jugador:
+-mostrar lista de jugadores
+- la direccion escribir con numero
+
+
+
+
+MODIFICAR CODIFO
+
+AGREGA JUGADOR:
+-SACAR SOLO letras

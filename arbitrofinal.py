@@ -483,65 +483,64 @@ def detectar_camino_arco(cancha, jugadores, arbitro):
 
 
 # ─────────────────────────────────────────────
-#  EXTRA – mostrar_cancha_parcial
+#  EXTRA – mostrar_cancha_completa
 # ─────────────────────────────────────────────
-def mostrar_cancha_parcial(cancha, arbitro, jugadores):
+def mostrar_cancha_completa(cancha, arbitro, jugadores):
     """
-    Muestra una seccion de 20 filas x 30 columnas de la cancha, centrada en el
-    portador de la pelota. Si no hay portador, se centra en el arbitro.
-    Incluye una leyenda con los jugadores visibles en esa ventana.
+    Muestra la cancha completa (40 filas x 60 columnas) en consola.
+    Incluye los arcos de cada equipo en las columnas 0 (Argentina) y 59 (Brasil),
+    representados como '|' en las filas centrales del arco (filas 15 a 24).
+    Debajo de la cancha se imprime una leyenda con todos los jugadores.
 
     Args:
         cancha (list[list[str]]): La matriz de la cancha.
         arbitro (dict): Posicion del arbitro.
-        jugadores (list[dict]): Lista de jugadores para generar la leyenda.
+        jugadores (list[dict]): Lista de todos los jugadores para la leyenda.
     """
-    portador = _jugador_con_pelota(jugadores)
-    if portador:
-        fila_centro = portador["fila"]
-        col_centro = portador["columna"]
-    elif arbitro:
-        fila_centro = arbitro["fila"]
-        col_centro = arbitro["columna"]
-    else:
-        fila_centro, col_centro = 20, 30
+    # Filas que forman el arco (zona central vertical de la cancha)
+    FILAS_ARCO_INICIO = 15
+    FILAS_ARCO_FIN = 24
 
-    # Calcular ventana de 20 filas, ajustando si se sale de los limites
-    fila_inicio = max(0, fila_centro - 10)
-    fila_fin = min(39, fila_inicio + 19)
-    if fila_fin - fila_inicio < 19:
-        fila_inicio = max(0, fila_fin - 19)
+    print("\n  === CANCHA COMPLETA ===")
+    print()
 
-    # Calcular ventana de 30 columnas, ajustando si se sale de los limites
-    col_inicio = max(0, col_centro - 15)
-    col_fin = min(59, col_inicio + 29)
-    if col_fin - col_inicio < 29:
-        col_inicio = max(0, col_fin - 29)
+    # Encabezado: decenas de columna
+    print("      " + "".join(str(col // 10) for col in range(60)))
+    # Encabezado: unidades de columna
+    print("      " + "".join(str(col % 10) for col in range(60)))
+    print("      " + "-" * 60)
 
-    print(f"\n  Vista parcial: filas {fila_inicio}-{fila_fin}, cols {col_inicio}-{col_fin}")
-    print("     " + "".join(str(col % 10) for col in range(col_inicio, col_fin + 1)))
-    print("     " + "-" * (col_fin - col_inicio + 1))
-
-    for fila in range(fila_inicio, fila_fin + 1):
+    for fila in range(40):
         fila_str = f"{fila:>3} |"
-        for col in range(col_inicio, col_fin + 1):
-            fila_str += cancha[fila][col]
+        for col in range(60):
+            # Dibujar postes del arco de Argentina (columna 0) y Brasil (columna 59)
+            if col == 0 and FILAS_ARCO_INICIO <= fila <= FILAS_ARCO_FIN:
+                fila_str += "|"
+            elif col == 59 and FILAS_ARCO_INICIO <= fila <= FILAS_ARCO_FIN:
+                fila_str += "|"
+            else:
+                fila_str += cancha[fila][col]
         print(fila_str)
 
-    # Leyenda: jugadores y arbitro visibles en la ventana
-    print()
-    jugadores_en_ventana = [
-        jugador for jugador in jugadores
-        if fila_inicio <= jugador["fila"] <= fila_fin and col_inicio <= jugador["columna"] <= col_fin
-    ]
-    for jugador in jugadores_en_ventana:
-        indicador_pelota = " [tiene pelota]" if jugador["tiene_pelota"] else ""
-        print(f"    {jugador['equipo']} {jugador['nombre']:<15} ({jugador['fila']:>2},{jugador['columna']:>2}) {jugador['rol']}{indicador_pelota}")
+    print("      " + "-" * 60)
 
-    if (arbitro
-            and fila_inicio <= arbitro["fila"] <= fila_fin
-            and col_inicio <= arbitro["columna"] <= col_fin):
-        print(f"    R Arbitro          ({arbitro['fila']:>2},{arbitro['columna']:>2})")
+    # Referencias de los arcos
+    print(f"  Arco Argentina (A): columna 0  | filas {FILAS_ARCO_INICIO}-{FILAS_ARCO_FIN}")
+    print(f"  Arco Brasil    (B): columna 59 | filas {FILAS_ARCO_INICIO}-{FILAS_ARCO_FIN}")
+
+    # Leyenda completa de jugadores
+    print()
+    print(f"  {'Equipo':<8} {'Nombre':<16} {'Fila':>4} {'Col':>4}  {'Rol':<16} {'Pelota'}")
+    print("  " + "-" * 60)
+    for jugador in jugadores:
+        indicador_pelota = "[*]" if jugador["tiene_pelota"] else ""
+        print(
+            f"  {jugador['equipo']:<8} {jugador['nombre']:<16}"
+            f" {jugador['fila']:>4} {jugador['columna']:>4}  "
+            f"{jugador['rol']:<16} {indicador_pelota}"
+        )
+    if arbitro:
+        print(f"  {'R':<8} {'Arbitro':<16} {arbitro['fila']:>4} {arbitro['columna']:>4}")
 
 
 # ─────────────────────────────────────────────
@@ -618,7 +617,7 @@ def menu():
         print("\n" + "-" * 40)
         print("  MENU PRINCIPAL")
         print("-" * 40)
-        print("  1. Ver cancha (vista parcial)")
+        print("  1. Ver cancha completa")
         print("  2. Agregar jugador")
         print("  3. Mover jugador")
         print("  4. Calcular distancias a la pelota")
@@ -630,34 +629,149 @@ def menu():
         opcion = input("  Opcion: ").strip()
 
         if opcion == "1":
-            mostrar_cancha_parcial(cancha, arbitro, jugadores)
+            mostrar_cancha_completa(cancha, arbitro, jugadores)
 
         elif opcion == "2":
             print("\n  === AGREGAR JUGADOR ===")
-            try:
-                nombre = input("  Nombre: ").strip()
-                equipo = input("  Equipo (A/B): ").strip().upper()
-                fila = int(input("  Fila (0-39): ").strip())
-                columna = int(input("  Columna (0-59): ").strip())
-                rol = input("  Rol (arquero/defensor/mediocampista/delantero): ").strip().lower()
-                respuesta_pelota = input("  Tiene pelota? (s/n): ").strip().lower()
-                tiene_pelota = respuesta_pelota == "s"
-                nuevo_jugador = {
-                    "nombre": nombre,
-                    "equipo": equipo,
-                    "fila": fila,
-                    "columna": columna,
-                    "rol": rol,
-                    "tiene_pelota": tiene_pelota,
-                }
-                posicionar_jugador(cancha, jugadores, nuevo_jugador, arbitro)
-            except ValueError:
-                print("  Error: La fila y la columna deben ser numeros enteros.")
+
+            # --- Nombre: solo letras y espacios, no vacio, no duplicado ---
+            nombre = ""
+            while True:
+                nombre = input("  Nombre (solo letras): ").strip()
+                if not nombre:
+                    print("  Error: El nombre no puede estar vacio.")
+                elif not all(caracter.isalpha() or caracter == " " for caracter in nombre):
+                    print("  Error: El nombre solo puede contener letras y espacios, sin numeros ni simbolos.")
+                else:
+                    break
+
+            # --- Equipo: solo A o B ---
+            equipo = ""
+            while True:
+                equipo = input("  Equipo (A o B): ").strip().upper()
+                if equipo == "A" or equipo == "B":
+                    break
+                print("  Error: El equipo debe ser A o B, sin numeros ni otras palabras.")
+
+            # --- Fila: solo numeros enteros en rango 0-39 ---
+            fila = -1
+            while True:
+                entrada_fila = input("  Fila (0-39): ").strip()
+                if not entrada_fila.isdigit():
+                    print("  Error: La fila debe ser un numero entero positivo, sin letras.")
+                elif not (0 <= int(entrada_fila) <= 39):
+                    print("  Error: La fila debe estar entre 0 y 39.")
+                else:
+                    fila = int(entrada_fila)
+                    break
+
+            # --- Columna: solo numeros enteros en rango 0-59 ---
+            columna = -1
+            while True:
+                entrada_columna = input("  Columna (0-59): ").strip()
+                if not entrada_columna.isdigit():
+                    print("  Error: La columna debe ser un numero entero positivo, sin letras.")
+                elif not (0 <= int(entrada_columna) <= 59):
+                    print("  Error: La columna debe estar entre 0 y 59.")
+                else:
+                    columna = int(entrada_columna)
+                    break
+
+            # --- Rol: seleccion por numero ---
+            MENU_ROLES = {
+                "1": "arquero",
+                "2": "defensor",
+                "3": "mediocampista",
+                "4": "delantero",
+            }
+            print("  Rol:")
+            print("    1. Arquero")
+            print("    2. Defensor")
+            print("    3. Mediocampista")
+            print("    4. Delantero")
+            rol = ""
+            while True:
+                opcion_rol = input("  Seleccione el numero del rol (1-4): ").strip()
+                if opcion_rol in MENU_ROLES:
+                    rol = MENU_ROLES[opcion_rol]
+                    break
+                print("  Error: Ingrese 1, 2, 3 o 4 para seleccionar el rol.")
+
+            # --- Pelota ---
+            respuesta_pelota = input("  Tiene pelota? (s/n): ").strip().lower()
+            tiene_pelota = respuesta_pelota == "s"
+
+            nuevo_jugador = {
+                "nombre": nombre,
+                "equipo": equipo,
+                "fila": fila,
+                "columna": columna,
+                "rol": rol,
+                "tiene_pelota": tiene_pelota,
+            }
+            posicionar_jugador(cancha, jugadores, nuevo_jugador, arbitro)
 
         elif opcion == "3":
             print("\n  === MOVER JUGADOR ===")
-            nombre_jugador = input("  Nombre del jugador: ").strip()
-            direccion = input("  Direccion (arriba/abajo/izquierda/derecha): ").strip().lower()
+
+            # --- Mostrar lista de jugadores de ambos equipos ---
+            jugadores_arg = [j for j in jugadores if j["equipo"] == "A"]
+            jugadores_bra = [j for j in jugadores if j["equipo"] == "B"]
+
+            print()
+            print(f"  {'#':<4} {'Equipo':<8} {'Nombre':<16} {'Fila':>4} {'Col':>4}  {'Rol'}")
+            print("  " + "-" * 52)
+
+            nombres_validos = []
+            contador = 1
+            for jugador in jugadores_arg:
+                indicador = " [*]" if jugador["tiene_pelota"] else ""
+                print(
+                    f"  {contador:<4} {'Argentina':<8} {jugador['nombre']:<16}"
+                    f" {jugador['fila']:>4} {jugador['columna']:>4}  {jugador['rol']}{indicador}"
+                )
+                nombres_validos.append(jugador["nombre"].lower())
+                contador += 1
+
+            print("  " + "-" * 52)
+            for jugador in jugadores_bra:
+                indicador = " [*]" if jugador["tiene_pelota"] else ""
+                print(
+                    f"  {contador:<4} {'Brasil':<8} {jugador['nombre']:<16}"
+                    f" {jugador['fila']:>4} {jugador['columna']:>4}  {jugador['rol']}{indicador}"
+                )
+                nombres_validos.append(jugador["nombre"].lower())
+                contador += 1
+
+            print()
+
+            # --- Nombre: solo letras/espacios y debe estar en la lista ---
+            nombre_jugador = ""
+            while True:
+                nombre_jugador = input("  Nombre del jugador a mover: ").strip()
+                if not nombre_jugador:
+                    print("  Error: El nombre no puede estar vacio.")
+                elif not all(caracter.isalpha() or caracter == " " for caracter in nombre_jugador):
+                    print("  Error: El nombre solo puede contener letras y espacios, sin numeros ni simbolos.")
+                elif nombre_jugador.lower() not in nombres_validos:
+                    print(f"  Error: '{nombre_jugador}' no esta en la lista de jugadores.")
+                else:
+                    break
+
+            # --- Direccion ---
+            print("  Direccion:")
+            print("    1. Arriba")
+            print("    2. Abajo")
+            print("    3. Izquierda")
+            print("    4. Derecha")
+            MENU_DIRECCIONES = {"1": "arriba", "2": "abajo", "3": "izquierda", "4": "derecha"}
+            while True:
+                opcion_dir = input("  Seleccione el numero de la direccion (1-4): ").strip()
+                if opcion_dir in MENU_DIRECCIONES:
+                    direccion = MENU_DIRECCIONES[opcion_dir]
+                    break
+                print("  Error: Ingrese 1, 2, 3 o 4 para seleccionar la direccion.")
+
             mover_jugador(cancha, jugadores, nombre_jugador, direccion, arbitro)
 
         elif opcion == "4":
