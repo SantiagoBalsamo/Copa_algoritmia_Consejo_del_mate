@@ -1,28 +1,25 @@
+# DESAFÍO 3: "LA CANCHA INTELIGENTE"
+# Copa de Algoritmia y Programación - UADE 2026
+
 import random
 
-# ─────────────────────────────────────────────
-#  TAREA 1 – crear_cancha
-# ─────────────────────────────────────────────
 def crear_cancha():
     """
     Crea y retorna la cancha de juego como una matriz de 40 filas x 60 columnas.
 
     Returns:
-        list[list[str]]: Matriz 40x60 inicializada con '.' en cada celda.
+        Matriz 40x60 inicializada con '.' en cada celda.
     """
     return [["." for _ in range(60)] for _ in range(40)]
 
 
-# ─────────────────────────────────────────────
-#  HELPERS INTERNOS
-# ─────────────────────────────────────────────
 def _dentro_de_limites(fila, columna):
     """
     Verifica si una posicion esta dentro de los limites de la cancha (0-39, 0-59).
 
     Args:
-        fila (int): Numero de fila a verificar.
-        columna (int): Numero de columna a verificar.
+        Numero de fila a verificar.
+        Numero de columna a verificar.
 
     Returns:
         bool: True si la posicion es valida, False si esta fuera de los limites.
@@ -35,10 +32,10 @@ def _celdas_sombra_arbitro(arbitro):
     Calcula el conjunto de celdas bloqueadas por el arbitro: su celda y las 4 adyacentes.
 
     Args:
-        arbitro (dict): Diccionario con claves 'fila' y 'columna'.
+        Diccionario con claves 'fila' y 'columna'.
 
     Returns:
-        set[tuple[int, int]]: Conjunto de tuplas (fila, columna) que forman la sombra.
+        Conjunto de tuplas (fila, columna) que forman la sombra.
     """
     sombra = set()
     fila_arbitro = arbitro["fila"]
@@ -56,10 +53,10 @@ def _jugador_con_pelota(jugadores):
     Busca y retorna el jugador que actualmente tiene la pelota.
 
     Args:
-        jugadores (list[dict]): Lista de jugadores en la cancha.
+        Lista de jugadores en la cancha.
 
     Returns:
-        dict | None: El jugador con tiene_pelota=True, o None si ninguno la tiene.
+        El jugador con tiene_pelota=True, o None si ninguno la tiene.
     """
     for jugador in jugadores:
         if jugador["tiene_pelota"]:
@@ -70,14 +67,13 @@ def _jugador_con_pelota(jugadores):
 def _actualizar_celda_arbitro(cancha, fila_vieja, col_vieja, fila_nueva, col_nueva):
     """
     Actualiza solo las dos celdas afectadas por el movimiento del arbitro.
-    Es mas eficiente que reconstruir toda la matriz.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        fila_vieja (int): Fila donde estaba el arbitro.
-        col_vieja (int): Columna donde estaba el arbitro.
-        fila_nueva (int): Fila a donde se mueve el arbitro.
-        col_nueva (int): Columna a donde se mueve el arbitro.
+        cancha: La matriz de la cancha.
+        fila_vieja: Fila donde estaba el arbitro.
+        col_vieja: Columna donde estaba el arbitro.
+        fila_nueva: Fila a donde se mueve el arbitro.
+        col_nueva: Columna a donde se mueve el arbitro.
     """
     cancha[fila_vieja][col_vieja] = "."
     # Restaurar obstaculo si la celda vieja era uno
@@ -89,14 +85,14 @@ def _actualizar_celda_arbitro(cancha, fila_vieja, col_vieja, fila_nueva, col_nue
 def _mover_arbitro(cancha, jugadores, arbitro):
     """
     Mueve el arbitro una celda tendiendo a acercarse al jugador con la pelota
-    (sigue la jugada). Con 70% de probabilidad elige la direccion que lo acerca
+    (sigue la jugada), con 70% de probabilidad elige la direccion que lo acerca
     al portador; con 30% se mueve de forma aleatoria. Solo ocupa celdas libres.
     Si ninguna celda esta disponible, permanece en su lugar e informa.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        jugadores (list[dict]): Lista de jugadores para evitar colisiones.
-        arbitro (dict): Diccionario con la posicion actual del arbitro.
+        cancha: La matriz de la cancha.
+        jugadores: Lista de jugadores para evitar colisiones.
+        arbitro: Diccionario con la posicion actual del arbitro.
     """
     posiciones_jugadores = {(j["fila"], j["columna"]) for j in jugadores}
     posiciones_obstaculos = {(obs[0], obs[1]) for obs in OBSTACULOS}
@@ -140,9 +136,6 @@ def _mover_arbitro(cancha, jugadores, arbitro):
     print("  [Arbitro] No encontro celda libre para moverse, permanece en su lugar.")
 
 
-# ─────────────────────────────────────────────
-#  TAREA 2 – posicionar_jugador
-# ─────────────────────────────────────────────
 ROLES_VALIDOS = {"arquero", "defensor", "mediocampista", "delantero"}
 EQUIPOS_VALIDOS = {"A", "B"}
 
@@ -161,10 +154,10 @@ def posicionar_jugador(cancha, jugadores, jugador, arbitro=None):
         - Solo un jugador puede tener tiene_pelota=True a la vez.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        jugadores (list[dict]): Lista actual de jugadores.
-        jugador (dict): Diccionario con los datos del nuevo jugador.
-        arbitro (dict | None): Posicion del arbitro para validar su sombra.
+        cancha: La matriz de la cancha.
+        jugadores: Lista actual de jugadores.
+        jugador: Diccionario con los datos del nuevo jugador.
+        arbitro: Posicion del arbitro para validar su sombra.
 
     Returns:
         bool: True si el jugador fue agregado correctamente, False si hubo algun error.
@@ -223,9 +216,6 @@ def posicionar_jugador(cancha, jugadores, jugador, arbitro=None):
     return True
 
 
-# ─────────────────────────────────────────────
-#  TAREA 3 – mover_jugador
-# ─────────────────────────────────────────────
 DIRECCIONES = {
     "arriba":    (-1,  0),
     "abajo":     ( 1,  0),
@@ -240,11 +230,11 @@ def mover_jugador(cancha, jugadores, nombre_jugador, direccion, arbitro):
     Tras intentar el movimiento (exitoso o no), el arbitro se desplaza aleatoriamente.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        jugadores (list[dict]): Lista de jugadores en la cancha.
-        nombre_jugador (str): Nombre del jugador a mover (no distingue mayusculas).
-        direccion (str): Direccion del movimiento: 'arriba', 'abajo', 'izquierda' o 'derecha'.
-        arbitro (dict): Posicion actual del arbitro.
+        cancha: La matriz de la cancha.
+        jugadores: Lista de jugadores en la cancha.
+        nombre_jugador: Nombre del jugador a mover (no distingue mayusculas).
+        direccion: Direccion del movimiento: 'arriba', 'abajo', 'izquierda' o 'derecha'.
+        arbitro: Posicion actual del arbitro.
 
     Returns:
         bool: True si el movimiento fue exitoso, False en caso contrario.
@@ -311,7 +301,7 @@ def calcular_distancias(jugadores):
     contemplando empates. El portador queda excluido del calculo.
 
     Args:
-        jugadores (list[dict]): Lista de jugadores en la cancha.
+        Lista de jugadores en la cancha.
     """
     portador = _jugador_con_pelota(jugadores)
     if portador is None:
@@ -352,13 +342,13 @@ def _linea_libre(cancha, arbitro, fila_origen, col_origen, fila_destino, col_des
     No bloquea el pase: jugadores del mismo equipo.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        arbitro (dict): Posicion del arbitro para calcular su sombra.
-        fila_origen (int): Fila del jugador con la pelota.
-        col_origen (int): Columna del jugador con la pelota.
-        fila_destino (int): Fila del receptor.
-        col_destino (int): Columna del receptor.
-        equipo_portador (str): Equipo del portador ('A' o 'B').
+        cancha: La matriz de la cancha.
+        arbitro: Posicion del arbitro para calcular su sombra.
+        fila_origen: Fila del jugador con la pelota.
+        col_origen: Columna del jugador con la pelota.
+        fila_destino: Fila del receptor.
+        col_destino: Columna del receptor.
+        equipo_portador: Equipo del portador ('A' o 'B').
 
     Returns:
         bool: True si la linea esta libre para el pase, False si esta bloqueada.
@@ -402,16 +392,16 @@ def _motivo_bloqueo_pase(cancha, arbitro, fila_origen, col_origen, fila_destino,
     obstaculo encontrado.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        arbitro (dict): Posicion del arbitro.
-        fila_origen (int): Fila del portador.
-        col_origen (int): Columna del portador.
-        fila_destino (int): Fila del receptor.
-        col_destino (int): Columna del receptor.
-        equipo_portador (str): Equipo del portador ('A' o 'B').
+        cancha: La matriz de la cancha.
+        arbitro: Posicion del arbitro.
+        fila_origen: Fila del portador.
+        col_origen: Columna del portador.
+        fila_destino: Fila del receptor.
+        col_destino: Columna del receptor.
+        equipo_portador: Equipo del portador ('A' o 'B').
 
     Returns:
-        str: Descripcion del motivo de bloqueo.
+        Descripcion del motivo de bloqueo.
     """
     sombra = _celdas_sombra_arbitro(arbitro)
     equipo_rival = "B" if equipo_portador == "A" else "A"
@@ -451,9 +441,9 @@ def detectar_pases(cancha, jugadores, arbitro):
         - No hay rivales, obstaculos 'X', arbitro ni su sombra en la linea intermedia.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        jugadores (list[dict]): Lista de jugadores en la cancha.
-        arbitro (dict): Posicion del arbitro.
+        cancha: La matriz de la cancha.
+        jugadores: Lista de jugadores en la cancha.
+        arbitro: Posicion del arbitro.
     """
     portador = _jugador_con_pelota(jugadores)
     if portador is None:
@@ -559,9 +549,6 @@ def detectar_pases(cancha, jugadores, arbitro):
             print("    No se encontraron sugerencias de movimiento disponibles.")
 
 
-# ─────────────────────────────────────────────
-#  TAREA 6 – detectar_camino_arco
-# ─────────────────────────────────────────────
 def detectar_camino_arco(cancha, jugadores, arbitro):
     """
     Para cada delantero en la cancha, verifica si tiene camino libre al arco rival.
@@ -573,9 +560,9 @@ def detectar_camino_arco(cancha, jugadores, arbitro):
         - Jugadores del mismo equipo no bloquean el camino.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        jugadores (list[dict]): Lista de jugadores en la cancha.
-        arbitro (dict): Posicion del arbitro para calcular su sombra.
+        cancha: La matriz de la cancha.
+        jugadores: Lista de jugadores en la cancha.
+        arbitro: Posicion del arbitro para calcular su sombra.
     """
     delanteros = [jugador for jugador in jugadores if jugador["rol"] == "delantero"]
     if not delanteros:
@@ -621,9 +608,6 @@ def detectar_camino_arco(cancha, jugadores, arbitro):
             print(f"  {delantero['nombre']} ({equipo}, col={col_delantero}): camino BLOQUEADO al arco rival.")
 
 
-# ─────────────────────────────────────────────
-#  EXTRA – mostrar_cancha_completa
-# ─────────────────────────────────────────────
 def mostrar_cancha_completa(cancha, arbitro, jugadores):
     """
     Muestra la cancha completa (40 filas x 60 columnas) en consola.
@@ -632,9 +616,9 @@ def mostrar_cancha_completa(cancha, arbitro, jugadores):
     Debajo de la cancha se imprime una leyenda con todos los jugadores.
 
     Args:
-        cancha (list[list[str]]): La matriz de la cancha.
-        arbitro (dict): Posicion del arbitro.
-        jugadores (list[dict]): Lista de todos los jugadores para la leyenda.
+        cancha: La matriz de la cancha.
+        arbitro: Posicion del arbitro.
+        jugadores: Lista de todos los jugadores para la leyenda.
     """
     # Filas que forman el arco (zona central vertical de la cancha)
     FILAS_ARCO_INICIO = 15
@@ -682,9 +666,6 @@ def mostrar_cancha_completa(cancha, arbitro, jugadores):
         print(f"  {'R':<8} {'Arbitro':<16} {arbitro['fila']:>4} {arbitro['columna']:>4}")
 
 
-# ─────────────────────────────────────────────
-#  DATOS INICIALES
-# ─────────────────────────────────────────────
 # Posiciones fijas de obstaculos en la cancha (fila, columna)
 OBSTACULOS = [(5, 25), (25, 25), (15, 35)]
 
@@ -696,7 +677,7 @@ def inicializar():
     marca los obstaculos fijos y coloca al arbitro cerca del portador inicial.
 
     Returns:
-        tuple: (cancha, jugadores, arbitro) con el estado inicial completo.
+        (cancha, jugadores, arbitro) con el estado inicial completo.
     """
     cancha = crear_cancha()
     jugadores = []
@@ -923,7 +904,7 @@ def menu():
             break
         else:
             print("  Opcion invalida. Ingrese un numero del 1 al 7.")
+            
 
-#  PUNTO DE ENTRADA
 if __name__ == "__main__":
     menu()
