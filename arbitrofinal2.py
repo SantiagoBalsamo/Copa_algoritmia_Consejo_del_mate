@@ -160,7 +160,7 @@ def posicionar_jugador(cancha, jugadores, jugador, arbitro=None):
         arbitro: Posicion del arbitro para validar su sombra.
 
     Returns:
-        bool: True si el jugador fue agregado correctamente, False si hubo algun error.
+        True si el jugador fue agregado correctamente, False si hubo algun error.
     """
     nombre = jugador.get("nombre", "").strip()
 
@@ -290,9 +290,6 @@ def mover_jugador(cancha, jugadores, nombre_jugador, direccion, arbitro):
     return True
 
 
-# ─────────────────────────────────────────────
-#  TAREA 4 – calcular_distancias
-# ─────────────────────────────────────────────
 def calcular_distancias(jugadores):
     """
     Calcula la distancia Manhattan desde cada jugador hasta el portador de la pelota.
@@ -351,7 +348,7 @@ def _linea_libre(cancha, arbitro, fila_origen, col_origen, fila_destino, col_des
         equipo_portador: Equipo del portador ('A' o 'B').
 
     Returns:
-        bool: True si la linea esta libre para el pase, False si esta bloqueada.
+        True si la linea esta libre para el pase, False si esta bloqueada.
     """
     sombra = _celdas_sombra_arbitro(arbitro)
     equipo_rival = "B" if equipo_portador == "A" else "A"
